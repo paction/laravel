@@ -77,13 +77,31 @@
                 <div class="title m-b-md">
                     Laravel
                 </div>
+                <div>
+                    A coding assignment task
+                </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    <a href="/products">Products List</a>
+                    <a href="/cart">Cart</a>
+                </div>
+                
+                <div>
+                    <p><strong>Env setup</strong></p>
+                    <p>* Laravel Framework 5
+                    <p>* use Homestead Vagrant for your development environment
+                    <p>* use bootstrap for front end, and mysql for database
+                    <hr>
+                    <p><strong>Feature</strong>
+                    <p>* create a page to display a list of products with title, images, price, description
+                    <p>* allow user to buy different options of a product. ie. size, color
+                    <p>* allow user to buy a bundle of products at a discounted price
+                    <p>* send email notification whenever a user purchase something
+                    <p>* write tests to make sure the above features work
+                    <hr>
+                    <p><strong>Bonus</strong>
+                    <p>* use event/listener architecture to send email asynchronously
+                    <p>* design a coupon module where we can offer a coupon for a specific product, or a bundle</p>
                 </div>
             </div>
         </div>
