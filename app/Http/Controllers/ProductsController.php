@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Products;
 
 class ProductsController extends Controller
 {
@@ -16,13 +17,13 @@ class ProductsController extends Controller
     {
         $id = (int)$request->input('id');
         if(!$id) {
-            $products = App\Products::all();
+            $products = Products::all();
             
             return view('products.index', [
                 'products' => $products,
             ]);
         } else {
-            $product = App\Products::find($id);
+            $product = Products::find($id);
             
             if($product) {
                 return view('products.details', [
