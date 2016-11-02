@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Laravel Assessment</title>
+    <title>Laravel Assessment - @yield('title')</title>
 
     <!-- CSS & JavaScript -->
   </head>
