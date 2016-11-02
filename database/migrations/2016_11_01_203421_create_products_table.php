@@ -18,7 +18,9 @@ class CreateProductsTable extends Migration
             $table->string('title');
             $table->longText('description');
             $table->decimal('price', 7, 2)->unsigned();
-            $table->integer('bundle')->nullable()->unsigned();
+            $table->smallInteger('discount')->unsigned()->default(0)->comment('Discount percentage');
+            $table->integer('bundle')->nullable()->unsigned()
+                ->comment('Create a bundle by putting here a bundle ID. The discount for a bundle is fixed (10%)');
             $table->timestamps();
         });
     }
