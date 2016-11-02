@@ -77,7 +77,7 @@
                 <div class="title m-b-md">
                     Laravel
                 </div>
-                <div>
+                <div class="description">
                     A coding assignment task
                 </div>
 
@@ -86,7 +86,7 @@
                     <a href="/cart">Cart</a>
                 </div>
                 
-                <div>
+                <div class="requirements">
                     <p><strong>Env setup</strong></p>
                     <p>* Laravel Framework 5
                     <p>* use Homestead Vagrant for your development environment
