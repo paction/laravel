@@ -64,14 +64,12 @@
             
             .requirements {
                 width: 100%;
-                height: 300px;
-                overflow: auto;
                 text-align: left;
                 margin: 30px 0;
                 padding: 20px;
                 border: 1px dashed #AAA;
                 border-right: none;
-                border-top: none;
+                border-left: none;
                 border-bottom: none;
             }
             
