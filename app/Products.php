@@ -10,4 +10,9 @@ class Products extends Model
     {
         return $this->hasMany(ProductImages::class);
     }
+    
+    public function options()
+    {
+        return $this->hasMany(ProductOptions::class);
+    }
 }
