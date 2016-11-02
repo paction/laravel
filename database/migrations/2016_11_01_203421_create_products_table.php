@@ -17,6 +17,8 @@ class CreateProductsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->longText('description');
+            $table->decimal('price', 7, 2)->unsigned();
+            $table->integer('bundle')->nullable()->unsigned();
             $table->timestamps();
         });
     }
