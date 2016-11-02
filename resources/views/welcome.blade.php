@@ -26,7 +26,6 @@
             }
 
             .flex-center {
-                align-items: center;
                 display: flex;
                 justify-content: center;
             }
@@ -61,6 +60,23 @@
 
             .m-b-md {
                 margin-bottom: 30px;
+            }
+            
+            .requirements {
+                width: 100%;
+                height: 300px;
+                overflow: auto;
+                text-align: left;
+                margin: 30px 0;
+                padding: 20px;
+                border: 1px dashed #AAA;
+                border-right: none;
+                border-top: none;
+                border-bottom: none;
+            }
+            
+            .description {
+                margin: 30px 0;
             }
         </style>
     </head>
