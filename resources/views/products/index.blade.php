@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Products in the store')
 @section('content')
 
   <!-- Bootstrap template -->
