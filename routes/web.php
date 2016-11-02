@@ -15,10 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/products', function () {
-    return view('products');
-});
+Route::get('/products', 'ProductsController@index');
 
-Route::get('/cart', function () {
-    return view('cart');
-});
+Route::get('/cart', 'CartController@index');
+
+Route::get('/order', 'OrderController@index');
