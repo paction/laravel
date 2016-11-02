@@ -20,6 +20,10 @@
                 height: 100vh;
                 margin: 0;
             }
+            
+            strong {
+                font-weight: 100;
+            }
 
             .full-height {
                 height: 100vh;
@@ -105,14 +109,14 @@
                     <p>* Laravel Framework 5
                     <p>* use Homestead Vagrant for your development environment
                     <p>* use bootstrap for front end, and mysql for database
-                    <hr>
+                    <p>
                     <p><strong>Feature</strong>
                     <p>* create a page to display a list of products with title, images, price, description
                     <p>* allow user to buy different options of a product. ie. size, color
                     <p>* allow user to buy a bundle of products at a discounted price
                     <p>* send email notification whenever a user purchase something
                     <p>* write tests to make sure the above features work
-                    <hr>
+                    <p>
                     <p><strong>Bonus</strong>
                     <p>* use event/listener architecture to send email asynchronously
                     <p>* design a coupon module where we can offer a coupon for a specific product, or a bundle</p>
