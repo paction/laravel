@@ -15,8 +15,8 @@ class CreateOrderItemsTable extends Migration
     {
         Schema::create('order_items', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('order_id');
-            $table->integer('product_id');
+            $table->integer('orders_id');
+            $table->integer('products_id');
             $table->integer('quantity')->default(1);
             $table->decimal('amount', 7, 2);
             $table->json('options')->nullable();

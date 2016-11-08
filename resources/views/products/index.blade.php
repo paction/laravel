@@ -29,8 +29,10 @@
       </div>
     </div>
     @else
-    <div class="panel panel-danger">
-      There are no products available in the store
+    <div class="row">
+        <div class="panel panel-danger">
+            <div class="panel-body">There are no products available in the store</div>
+        </div>
     </div>
     @endif
   </div>
