@@ -1,7 +1,10 @@
-{{--<script src="js/jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>--}}
+<footer>
+    <div class="text-center">
+        Some copyright ©
+    </div>
+</footer>
 
-<script src="js/app.js"></script>
+<script src="/js/app.js"></script>
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 

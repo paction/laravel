@@ -1,3 +1,52 @@
 .container {
     padding-top: 10px;
 }
+
+.products-cell > .panel {
+    min-height: 450px;
+}
+
+.products-cell > .panel > .panel-footer {
+    background-color: inherit;
+}
+
+.products-cell > .panel > .panel-heading {
+    text-transform: uppercase;
+    font-weight: 700;
+    height: 46px;
+    font-size: 16px;
+    line-height: 25px;
+}
+
+.products-cell .title a {
+    color: #ffffff;
+}
+
+.products-cell .price, .product-details .price {
+    font-size: 20px;
+}
+
+.products-cell .discounted-price {
+    color: #ffe2c1;
+}
+
+.products-cell .img-responsive {
+    width: 100%;
+}
+
+.product-details .buy-now {
+    margin-left: 20px;
+}
+
+.product-details .discounted-price sup {
+    color: #ff0000;
+}
+
+footer {
+    border: 1px solid #DDD;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    padding: 20px;
+    background: #fafafa;
+}
