@@ -18,6 +18,7 @@ $factory->define(App\Products::class, function (Faker\Generator $faker) {
         'description' => $faker->paragraph($faker->numberBetween(2, 5)),
         'price' => $faker->randomFloat(2, 0.7, 400),
         'discount' => $faker->randomElement([0, 5, 10, 15, 20]),
+        'bundle' => $faker->randomElement([0, 1, 2]),
     ];
 });
 

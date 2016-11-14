@@ -22,7 +22,7 @@
     color: #ffffff;
 }
 
-.products-cell .price, .product-details .price {
+.products-cell .price {
     font-size: 20px;
 }
 
@@ -34,12 +34,28 @@
     width: 100%;
 }
 
-.product-details .buy-now {
-    margin-left: 20px;
+.product-details h1 {
+    text-transform: uppercase;
 }
 
 .product-details .discounted-price sup {
     color: #ff0000;
+}
+
+.product-details .price {
+    font-size: 28px;
+}
+
+.product-details #quantity {
+    border-right: none;
+    font-size: 16px;
+    width: 40px;
+    vertical-align: middle;
+    background-color: inherit;
+    margin-left: 10px;
+    border-top: none;
+    border-left: none;
+    border-bottom: 1px solid #000;
 }
 
 footer {
