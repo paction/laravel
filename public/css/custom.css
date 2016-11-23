@@ -58,6 +58,10 @@
     border-bottom: 1px solid #000;
 }
 
+.cart .remove-from-cart {
+    color: #ff0000
+}
+
 footer {
     border: 1px solid #DDD;
     border-bottom: none;

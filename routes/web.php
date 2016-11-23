@@ -21,4 +21,6 @@ Route::get('/cart', 'CartController@index');
 
 Route::post('/cart', 'CartController@add');
 
+Route::delete('/cart', 'CartController@delete');
+
 Route::get('/order', 'OrderController@index');
