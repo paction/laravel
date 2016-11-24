@@ -15,4 +15,9 @@ class Products extends Model
     {
         return $this->hasMany(ProductOptions::class);
     }
+
+    public function getPrice()
+    {
+        return ($this->discount > 0) ? round(($this->price - $this->price * $this->discount / 100), 2) : $this->price;
+    }
 }

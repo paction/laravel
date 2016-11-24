@@ -13,7 +13,9 @@
                 <tr>
                     <th>#</th>
                     <th>Product</th>
+                    <th>Price</th>
                     <th>Quantity</th>
+                    <th>Cost</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -29,14 +31,16 @@
                             Selection: {{ $item->size }} {{ $item->color }}
                         </p>
                     </td>
+                    <td>${{ $item->price }}</td>
                     <td>{{ $item->quantity }}</td>
+                    <td>{{ $item->quantity * $item->price }}</td>
                     <td><a href="#" class="remove-from-cart" data-k="{{ $k }}">Remove</a></td>
                 </tr>
             @endforeach
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="4">
+                    <td colspan="6">
                         Total:
                     </td>
                 </tr>

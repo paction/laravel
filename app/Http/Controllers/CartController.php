@@ -18,24 +18,24 @@ class CartController extends Controller
 
         $bundles = [];
 
-        foreach ($cart as $item) {
-            $product = Products::find($item->products_id);
-            if($product) {
-                $price = ($product->discount > 0) ?
-                    ($product->price - $product->price * $product->discount / 100) : $product->price;
-                if($product->bundle && !isset($bundles[$product->bundle])) {
-                    $bundles[$product->bundle][] = $item->products_id;
+        if($cart) {
+            $cart = json_decode($cart);
+            foreach ($cart as $k=>$item) {
+                $product = Products::find($item->products_id);
+                if($product) {
+                    if($product->bundle && !isset($bundles[$product->bundle])) {
+                        $bundles[$product->bundle][$item->products_id]['price'] = $item->price;
+                    }
+                } else {
+                    //Error
                 }
-            } else {
-                //Error
             }
         }
-
         //$total += ;
 
-
+var_dump($bundles);
         return view('cart.index', [
-            'cart' => $cart ? json_decode($cart) : [],
+            'cart' => $cart ? $cart : []
         ]);
     }
 
@@ -67,7 +67,7 @@ class CartController extends Controller
                     && $product->size == $data['size']
                     && $product->color == $data['color']
                 ) {
-                    $cart[$k]->quantity += $data['quantity'];
+                    $cart[$k]->quantity += (int)$data['quantity'];
                     $productExists = true;
                 }
 
@@ -76,14 +76,16 @@ class CartController extends Controller
         }
 
         if(!$productExists) {
+            $product = Products::find($data['products_id']);
             $cart[] = [
-                'products_id' => $data['products_id'],
-                'quantity' => $data['quantity'],
+                'products_id' => (int)$data['products_id'],
+                'quantity' => (int)$data['quantity'],
                 'title' => $data['title'],
                 'size' => $data['size'],
-                'color' => $data['color']
+                'color' => $data['color'],
+                'price' => $product->getPrice()
             ];
-            $counter += $data['quantity'];
+            $counter += (int)$data['quantity'];
         }
 
         $request->session()->put('cart', json_encode($cart));
