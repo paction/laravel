@@ -91,7 +91,7 @@
                     <div class="col-sm-3">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <a href="/products/?id={{ $bundleProduct->id }}" target="_blank">{{ $bundleProduct->title }}</a>
+                                <a href="{{action('ProductsController@index', ['id' => $bundleProduct->id])}}" target="_blank">{{ $bundleProduct->title }}</a>
                                 @if ($bundleProduct->discount > 0)
                                     <span class="discounted-price">
                                         ${{ round($bundleProduct->price - $bundleProduct->price * $bundleProduct->discount / 100, 2) }}
@@ -102,17 +102,13 @@
                             </div>
                             <div class="panel-body">
                                 @if (count($bundleProduct->images) > 0 )
-                                    <a href="/products/?id={{ $bundleProduct->id }}">
+                                    <a href="{{action('ProductsController@index', ['id' => $bundleProduct->id])}}">
                                         <img src="{{ $bundleProduct->images[0]->path }}" class="img-responsive" alt="{{ $bundleProduct->title }}" />
                                     </a>
                                 @else
                                     <img src="https://placehold.it/540x300?text=IMAGE" class="img-responsive" alt="Image is not available">
                                 @endif
                             </div>
-                            {{--<div class="panel-footer">
-                                <a href="#" class="add-to-cart" data-title="{{ $bundleProduct->title }}"
-                                   data-id="{{ $bundleProduct->id }}" data-quantity="1">Add to cart</a>
-                            </div>--}}
                         </div>
                     </div>
                 @endforeach

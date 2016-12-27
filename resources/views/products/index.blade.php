@@ -13,7 +13,7 @@
       <div class="col-sm-6 products-cell">
         <div class="panel panel-primary">
           <div class="panel-heading">
-              <div class="col-sm-9 title"><a href="/products/?id={{ $product->id }}">{{ $product->title }}</a></div>
+              <div class="col-sm-9 title"><a href="{{action('ProductsController@index', ['id' => $product->id])}}">{{ $product->title }}</a></div>
               @if ($product->discount > 0)
                   <div class="col-sm-3 price discounted-price text-right">${{ round($product->price - $product->price * $product->discount / 100, 2) }}</div>
               @else
@@ -22,7 +22,7 @@
           </div>
           <div class="panel-body">
               @if (count($product->images) > 0 )
-                  <a href="/products/?id={{ $product->id }}"><img src="{{ $product->images[0]->path }}" class="img-responsive" alt="{{ $product->title }}" /></a>
+                  <a href="{{action('ProductsController@index', ['id' => $product->id])}}"><img src="{{ $product->images[0]->path }}" class="img-responsive" alt="{{ $product->title }}" /></a>
               @else
                   <img src="https://placehold.it/540x300?text=IMAGE" class="img-responsive" alt="Image is not available">
               @endif

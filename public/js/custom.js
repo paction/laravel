@@ -4,6 +4,7 @@ $(document).ready(function(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
     $('.add-to-cart').on('click', function(e) {
         e.preventDefault();
         var data = {
@@ -15,6 +16,7 @@ $(document).ready(function(){
         };
         addToCart(data);
     });
+
     $('.remove-from-cart').on('click', function(e) {
         e.preventDefault();
         var data = {
@@ -23,7 +25,6 @@ $(document).ready(function(){
         removeFromCart(data);
     });
 });
-
 
 function addToCart(data) {
     $.ajax({

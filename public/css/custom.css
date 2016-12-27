@@ -22,8 +22,13 @@
     color: #ffffff;
 }
 
+.products-cell .title {
+    float: left;
+}
+
 .products-cell .price {
     font-size: 20px;
+    float: right;
 }
 
 .products-cell .discounted-price {

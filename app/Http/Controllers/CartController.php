@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    private $bundles = [];
+    private $cart;
+    private $cartProductIndex = [];
+    private $cartOptions = [];
+
     /**
      * Shows the cart.
      *
@@ -14,33 +19,20 @@ class CartController extends Controller
      * @return Response
      */
     public function index(Request $request) {
-        $cart = $request->session()->get('cart');
+        $this->cart = $request->session()->get('cart');
+        $this->cartProductIndex = $request->session()->get('cartProductIndex');
+        $this->cartOptions = $request->session()->get('cartOptions');
+        $this->_decodeCart();
 
-        $bundles = [];
-
-        if($cart) {
-            $cart = json_decode($cart);
-            foreach ($cart as $k=>$item) {
-                $product = Products::find($item->products_id);
-                if($product) {
-                    if($product->bundle && !isset($bundles[$product->bundle])) {
-                        $bundles[$product->bundle][$item->products_id]['price'] = $item->price;
-                    }
-                } else {
-                    //Error
-                }
-            }
-        }
-        //$total += ;
-
-var_dump($bundles);
         return view('cart.index', [
-            'cart' => $cart ? $cart : []
+            'cart' => $this->cart ? $this->cart : [],
+            'total' => $this->cartOptions['total'],
+            'bundles' => $this->cartOptions['bundles']
         ]);
     }
 
     /**
-     * Adds product into the cart.
+     * Adds a product into the cart.
      *
      * @param  Request  $request
      * @return Response (json)
@@ -52,48 +44,35 @@ var_dump($bundles);
 
         $data = $request->all();
 
-        $cart = $request->session()->pull('cart');
+        $this->_pullCartFromSession($request);
 
-        $productExists = false;
-
-        $counter = 0;
-
-        if($cart) {
-            $cart = json_decode($cart);
-
-            // Check for existing product - adding quantity
-            foreach ($cart as $k => $product) {
-                if($product->products_id == $data['products_id']
-                    && $product->size == $data['size']
-                    && $product->color == $data['color']
-                ) {
-                    $cart[$k]->quantity += (int)$data['quantity'];
-                    $productExists = true;
+        $sameProductExists = false;
+        $this->_decodeCart();
+        if($this->cart) {
+            if(isset($this->cartProductIndex[$data['products_id']])) {
+                foreach ($this->cartProductIndex[$data['products_id']] as $index => $indexItem) {
+                    // Search for the same options
+                    if($indexItem == $data['size'] . $data['color']) {
+                        // Add quantity
+                        $this->cart[$index]->quantity += (int)$data['quantity'];
+                        $this->cartOptions['cartCounter'] += $data['quantity'];
+                        $sameProductExists = true;
+                        break;
+                    }
                 }
-
-                $counter += $cart[$k]->quantity;
             }
         }
 
-        if(!$productExists) {
-            $product = Products::find($data['products_id']);
-            $cart[] = [
-                'products_id' => (int)$data['products_id'],
-                'quantity' => (int)$data['quantity'],
-                'title' => $data['title'],
-                'size' => $data['size'],
-                'color' => $data['color'],
-                'price' => $product->getPrice()
-            ];
-            $counter += (int)$data['quantity'];
+        if(!$sameProductExists) {
+            $this->_addProductToCart($data);
         }
 
-        $request->session()->put('cart', json_encode($cart));
+        $this->_putCartToSession($request);
 
         $response = [
             'status' => 'success',
             'msg' => 'Added successfully.',
-            'counter' => $counter
+            'counter' => $this->cartOptions['cartCounter']
         ];
 
         return \Response::json($response);
@@ -113,16 +92,20 @@ var_dump($bundles);
 
         $data = $request->all();
 
-        $cart = $request->session()->pull('cart');
+        $this->_pullCartFromSession($request);
+        $this->_decodeCart();
 
-        if($cart && isset($data['k'])) {
-            $cart = json_decode($cart);
+        if($this->cart && isset($data['k'])) {
 
-            unset($cart[(int)$data['k']]);
+            $this->cartOptions['cartCounter'] -= $this->cart[$data['k']]->quantity;
 
-            $cart = array_values($cart);
+            if(count($this->cartProductIndex[$this->cart[$data['k']]->products_id]) == 1) {
+                unset($this->cartProductIndex[$this->cart[$data['k']]->products_id]);
+            }
 
-            $request->session()->put('cart', json_encode($cart));
+            unset($this->cart[$data['k']]);
+
+            $this->_putCartToSession($request);
 
             $response = [
                 'status' => 'success',
@@ -141,5 +124,144 @@ var_dump($bundles);
         }
 
         return \Response::json($response);
+    }
+
+    /**
+     * Checkout.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function checkout(Request $request) {
+        $this->cart = $request->session()->get('cart');
+        $this->cartOptions = $request->session()->get('cartOptions');
+        $this->_decodeCart();
+
+        return view('cart.checkout', [
+            'cart' => $this->cart ? $this->cart : [],
+            'total' => $this->cartOptions['total']
+        ]);
+    }
+
+    /*
+     * Removes incomplete bundles
+     */
+    private function _processBundles()
+    {
+        if($this->cart) {
+            foreach ($this->cartProductIndex as $k => $item) {
+                $product = Products::find($k);
+                if ($product) {
+                    if ($product->bundle) {
+                        $this->bundles[$product->bundle][] = $k;
+                    }
+                } else {
+                    //Error
+                }
+            }
+
+            if (!empty($this->bundles)) {
+                $this->cartOptions['bundles'] = false;
+                foreach ($this->bundles as $k => $bundle) {
+                    if (count($bundle) != Products::where('bundle', $k)->count()) {
+                        foreach ($bundle as $productInBundle) {
+                            foreach ($this->cartProductIndex[$productInBundle] as $index => $value) {
+                                $this->cart[$index]->bundlePrice = 0;
+                            }
+                        }
+                        unset($this->bundles[$k]);
+                    } else {
+                        foreach ($bundle as $productInBundle) {
+                            foreach ($this->cartProductIndex[$productInBundle] as $index => $value) {
+                                $this->cart[$index]->bundlePrice =
+                                    round($this->cart[$index]->price * (1 - \Config::get('custom.bundles.discount')), 2);
+                            }
+                        }
+                        $this->cartOptions['bundles'] = true;
+                    }
+                }
+            }
+        }
+    }
+
+    private function _generateRandomIndex()
+    {
+        return md5(time() + rand(1, 1000));
+    }
+
+    private function _decodeCart()
+    {
+        if(!empty($this->cart)) {
+            $this->cart = (array)json_decode($this->cart);
+        }
+        if(!empty($this->cartProductIndex)) {
+            $this->cartProductIndex = json_decode($this->cartProductIndex, true);
+        }
+        if(!empty($this->cartOptions)) {
+            $this->cartOptions = json_decode($this->cartOptions, true);
+        }
+        if(!isset($this->cartOptions['total'])) {
+            $this->cartOptions['total'] = 0;
+        }
+        if(!isset($this->cartOptions['cartCounter'])) {
+            $this->cartOptions['cartCounter'] = 0;
+        }
+        if(!isset($this->cartOptions['bundles'])) {
+            $this->cartOptions['bundles'] = false;
+        }
+    }
+
+    /*
+     * Calculates total amount.
+     *
+     * @return double $total
+     */
+    private function _calcTotal()
+    {
+        $total = 0;
+        foreach ($this->cart as $item) {
+            $total += ($item->bundlePrice ? ($item->bundlePrice * $item->quantity) : ($item->price * $item->quantity));
+        }
+        return $total;
+    }
+
+    private function _pullCartFromSession($request)
+    {
+        $this->cartOptions = $request->session()->pull('cartOptions');
+        $this->cart = $request->session()->pull('cart');
+        $this->cartProductIndex = $request->session()->pull('cartProductIndex');
+    }
+
+    private function _putCartToSession($request)
+    {
+        $this->_processBundles();
+        $this->cartOptions['total'] =  $this->_calcTotal();
+        $this->cartOptions['total'] =  $this->_calcTotal();
+        $request->session()->put('cart', json_encode($this->cart));
+        $request->session()->put('cartProductIndex', json_encode($this->cartProductIndex));
+        $request->session()->put('cartOptions', json_encode($this->cartOptions));
+    }
+
+    private function _addProductToCart($data)
+    {
+        $product = Products::find((int)$data['products_id']);
+        $index = $this->_generateRandomIndex();
+        $this->cart[$index] = (object) [
+            'products_id' => (int)$data['products_id'],
+            'quantity' => (int)$data['quantity'],
+            'title' => $data['title'],
+            'size' => $data['size'],
+            'color' => $data['color'],
+            'price' => $product->getPrice(),
+            'bundlePrice' => 0
+        ];
+
+        // Add product into Product index
+        $this->cartProductIndex[(int)$data['products_id']][$index] = $data['size'] . $data['color'];
+
+        if(!isset($this->cartOptions['cartCounter'])) {
+            $this->cartOptions['cartCounter'] = 0;
+        }
+        $this->cartOptions['cartCounter'] += $data['quantity'];
     }
 }
