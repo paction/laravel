@@ -15,6 +15,16 @@
                     </div>
                     <div class="panel-body">
                         {{ Form::token() }}
+
+                        @if (count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
                         <div class="row">
                             <div class="col-lg-2 col-md-3 col-sm-4">
                                 {{ Form::label('email', 'Your E-Mail Address') }}:
@@ -23,6 +33,7 @@
                                 {{ Form::text('email', null, ['placeholder' => 'Your email']) }}
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-md-12">
                                 Total: ${{ $total }}
