@@ -15,7 +15,7 @@
             html, body {
                 background-color: #fff;
                 color: #464e52;
-                font-family: 'Raleway', sans-serif;
+                font-family: Tahoma;
                 font-weight: 100;
                 height: 100vh;
                 margin: 0;
@@ -80,6 +80,15 @@
             .description {
                 margin: 30px 0;
             }
+
+            .github {
+                color: red;
+                margin: 30px 0;
+            }
+
+            .github a {
+                color: red;
+            }
         </style>
     </head>
     <body>
@@ -112,6 +121,10 @@
                     <h4>Bonus</h4>
                     <p>* use event/listener architecture to send email asynchronously
                     <p>* design a coupon module where we can offer a coupon for a specific product, or a bundle</p>
+                </div>
+
+                <div class="github">
+                    <a href="https://github.com/paction/laravel" target="_blank">https://github.com/paction/laravel</a>
                 </div>
             </div>
         </div>

@@ -15,15 +15,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/products', 'ProductsController@index');
+Route::get('/products', 'ProductsController@index')->name('products');
 
-Route::get('/cart', 'CartController@index');
+Route::get('/cart', 'CartController@index')->name('cart');
 
 Route::post('/cart', 'CartController@add');
 
-Route::get('/cart/checkout', 'CartController@checkout');
+Route::get('/cart/checkout', 'CartController@checkout')->name('checkout');
 
 Route::post('/order/place', 'OrderController@place');
+
+Route::get('/order/place', 'OrderController@place');
 
 Route::delete('/cart', 'CartController@delete');
 

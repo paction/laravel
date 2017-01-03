@@ -22,6 +22,7 @@ class OrderController extends Controller
         ]);
 
         $errors = [];
+        $orderId = null;
 
         $cart = $request->session()->get('cart');
         $cartOptions = $request->session()->get('cartOptions');
@@ -37,7 +38,7 @@ class OrderController extends Controller
             if($order->save()) {
                 foreach($cart as $item) {
                     $orderItem = new OrderItems;
-                    $orderItem->orders_id = $order->id;
+                    $orderItem->orders_id = $orderId = $order->id;
                     $orderItem->products_id = $item->products_id;
                     $orderItem->quantity = $item->quantity;
                     // This part can be redone to pull price from the database instead of session
@@ -61,7 +62,8 @@ class OrderController extends Controller
         }
 
         return view('order.place', [
-            'otherErrors' => $errors
+            'otherErrors' => $errors,
+            'orderId' => $orderId
         ]);
     }
 }
