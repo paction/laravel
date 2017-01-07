@@ -1,14 +1,12 @@
 # Laravel PHP Framework
 
-A coding assignment task
-
 ## Env setup
 
 * Laravel Framework 5
 
-* use Homestead Vagrant for your development environment
+* ~~use Homestead Vagrant for your development environment~~
 
-* use bootstrap for front end, and mysql for database
+* bootstrap for front end, and mysql for database
 
 ## Feature
 
@@ -22,9 +20,7 @@ A coding assignment task
 
 * write tests to make sure the above features work
 
-## Bonus
-
-* use event/listener architecture to send email asynchronously
+* event/listener architecture to send email asynchronously
 
 * ~~design a coupon module where we can offer a coupon for a specific product, or a bundle~~
 
